@@ -52,7 +52,7 @@ $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z
 
 - Method: 
 
-  $${\mathcal{L}}(\theta, \phi;x^{i})\simeq\tilde{\mathcal{L}}(\theta, \phi;x^{i}) = -KL(q_{\phi}(z|x)||p_{\theta}(z)) + \frac{1}{L}\sum_{l=1}^L\ln p_{\theta}(x^{(i)}|z^{(i,l)}) ​$$
+  $${\mathcal{L}}(\theta, \phi;x^{i})\simeq\tilde{\mathcal{L}}(\theta, \phi;x^{i}) = -KL(q_{\phi}(z|x)||p_{\theta}(z)) + \frac{1}{L}\sum_{l=1}^L\ln p_{\theta}(x^{(i)}|z^{(i,l)}) $$
 
   ​
 
@@ -72,7 +72,7 @@ $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z
 
 - Objective: 
 
-  generate the samples from $q_\theta(\mathbf{z}|\mathbf{x})$, rewrite an exception w.r.t. $q_\phi(\mathbf{z}|\mathbf{x})$ such that the Monte Carlo estimator of the expectation is differentiable w.r.t. $\phi$.
+  generate the samples from $q_{\theta}(\mathbf{z}|\mathbf{x})​$, rewrite an exception w.r.t. $q_{\phi}(\mathbf{z}|\mathbf{x})​$ such that the Monte Carlo estimator of the expectation is differentiable w.r.t. $\phi​$.
 
 - Method:
 
