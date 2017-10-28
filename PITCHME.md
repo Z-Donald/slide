@@ -1,84 +1,66 @@
-> 前言
-
-很久没有更新博客了，自己已经养成了记录一些成长途中点点滴滴的习惯，也存了不少的干货，但是都比较零散，有些话可能自己可以看懂，拿出来，大家会一脸懵逼！俗称——草稿！
-
-慢慢整理，慢慢分享吧！享受生活中的美好，分享给大家！我也很高兴的呢！
+# Variational autoencoder
 
 ---
 
+## What is variational autoencoder?
 
+### Structure: Autoencoder
 
-> 积小流 成江河 积跬步 致千里
+* use MLP as encoder and decoder.
+* The objective of common version autoencoder is $\mathcal{L}(X, X')=||X-X'||_2^2$, where $X$ is the original image and $X'$ is reconstruction image.
 
+### Objective function: Variational inference
 
-# GitPitch
+* $\max \ln p(\mathbf{X})=\int q(\mathbf{Z})\ln(\frac{p(\mathbf{X,Z})}{q(\mathbf{Z})})d\mathbf{Z}-\int q(\mathbf{Z})\ln(\frac{p(\mathbf{Z}|\mathbf{X})}{q(\mathbf{Z})})d\mathbf{Z}$
 
-这个东东也是今天看到的，以前给同事做分享的，一般会用gitbook或者wiki，当然啦，肯定实现markdown写好东西上传的喽。这里安利一下markdown 学会它，就可以抛弃word了 排版什么的太口怕了。markdown语法其实很简单，用超级简单也不为过的了。
+  $=\mathcal{L}(q)+KL(q||p)$
 
----
+* The objective of variational autoencoder is to comfirm that the posterior probability density function in the encoder approximates the posterior probability density function in the decoder. 
 
+* The final objective function of variational autoencoder is
 
+  $\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z}|\mathbf{x}^{(i)})||p_\theta(\mathbf{z}))+E_{q_\phi(z|x^{(i)})}[\log p_\theta(\mathbf{x}^{(i)}|\mathbf{z})]$. 
 
-## 直达
+  ---
 
-[本人这篇文档的幻灯片版 大家可以直接点开看怎么用 和效果哦](https://gitpitch.com/jddjj/share/master?grs=github&t=moon)
+## How to optimize the model?
 
----
+### The SGVB estimator and AEVB algorithm
 
-## 正文
+* Objective: 
 
-其实大家只需要把这个当成讲你写的markdown格式的文件变成一个幻灯片，直接可以网页浏览，可分享，可导出，并且还挺漂亮的。大家在做一些内部分享的时候，可以使用！
+  estimate the lower bound and its derivatives w.r.t. the parameters
 
----
+* Method: 
 
+  ${\mathcal{L}}(\theta, \phi;x^{i})\simeq\tilde{\mathcal{L}}(\theta, \phi;x^{i}) = -KL(q_\phi(z|x)||p_{\theta}(z)) + \frac{1}{L}\sum_{l=1}^L\ln p_\theta(x^{(i)}|z^{(i,l)}) $
 
+  Why? 
 
-#### 用法
+  1. KL-divergence can often be integrated analytically. 
 
-- Github账户 新建一个工程，比如share
-- 在该工程下新建一个名叫PITCHME.md<必须叫这个>的文件 这个文件里就是markdown语法写的你要分享啦，或着导出啦的文档
+     When both prior $p_\theta(\mathbf{z})=\mathcal{N}(0, \mathbf{I})$ and posterior approximation $q_\phi(\mathbf{z}|\mathbf{x}^{(i)})$ are Gaussion, 
 
----
+     $-KL(q_\phi(z|x)||p_{\theta}(z)) =\frac{1}{2}\sum_{j=1}^J(1+\log(\sigma_j^2-\mu_j^2-\sigma_j^2))$
 
+  2. This estimator has less variance. 
 
+     ---
 
-- 拓展方面可以在创建一个PITCHME.yaml的文件 里面可以存储一些配置 比如
+### Reparameterization trick
 
-```java
-theme : black//主题
-autoslide : 5500//自动几毫秒后滑动
-mousewheel : true//可以滚轮控制
-```
+* Objective: 
 
-   等等配置大家可以去官网[GitPitch](https://github.com/gitpitch/gitpitch/wiki/Slide-Delimiters)
+  generate the samples from $q_\theta(\mathbf{z}|\mathbf{x})$, rewrite an exception w.r.t. $q_\phi(\mathbf{z}|\mathbf{x})$ such that the Monte Carlo estimator of the expectation is differentiable w.r.t. $\phi$.
 
----
+* Method:
 
-- 还有一个要注意的点，如果想你的文案可以滑动 需要在 PITCHME.md中
+  $\epsilon^{(l)}\sim p(\epsilon)$ , $\mathbf{z}=g_\phi(\epsilon, \mathbf{x})$
 
-进行模块分割，因为它一页只能显示么多，
+  example: Let $z\sim p(z|x)=\mathcal{N}(\mu,\sigma^2)$, then a reparameterization is $z=\mu+\sigma\epsilon$, where $\epsilon$ is an auxiliary noise variable $\epsilon\sim\mathcal{N}(0,1) $. 
 
-```java
-//分页方式：
+  ----
 
----      //以这个分割上下 渲染后则是横向滑动切换页面
+## Algorithm
 
-+++      //以这个分割上下 渲染后则是竖向滑动切换页面
-```
-
----
-
-#### 重点
-
-最重要的是怎么访问，上面已经都准备好原材料了，就差煮了。其实访问很简单：
-
-```java
-https://gitpitch.com/user/repo  //打开网站直接输入gitpitch.com/你的github用户名／你的工程名 Ok啦
-```
----
-
-
-
-### 最后
-
-这篇文章好短啊，捂脸！为了弥补一下，这里再向大家推荐一个markdown利器，[typora](https://www.typora.io/)！谁用谁知道！
+Input: 
