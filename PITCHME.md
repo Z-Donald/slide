@@ -26,7 +26,7 @@
 
 - The objective of variational autoencoder is to comfirm that the posterior probability density function in the encoder approximates the posterior probability density function in the decoder. 
 
-- The final objective function of variational autoencoder is $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})||p_{\theta}(\mathbf{z}))+E_{q_{\phi}(z|x^{(i)})}[\log p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z})]​$$. 
+- The final objective function of variational autoencoder is $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})||p_{\theta}(\mathbf{z}))+E_{q_{\phi}(z|x^{(i)})}[\log p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z})]$$. 
 
 
 ---
@@ -52,7 +52,7 @@ $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z
 
 - Method: 
 
-  $${\mathcal{L}}(\theta, \phi;x^{i})\simeq\tilde{\mathcal{L}}(\theta, \phi;x^{i}) = -KL(q_\phi(z|x)||p_{\theta}(z)) + \frac{1}{L}\sum_{l=1}^L\ln p_\theta(x^{(i)}|z^{(i,l)}) $$
+  $${\mathcal{L}}(\theta, \phi;x^{i})\simeq\tilde{\mathcal{L}}(\theta, \phi;x^{i}) = -KL(q_{\phi}(z|x)||p_{\theta}(z)) + \frac{1}{L}\sum_{l=1}^L\ln p_{\theta}(x^{(i)}|z^{(i,l)}) ​$$
 
   ​
 
