@@ -1,100 +1,66 @@
-@title[Introduction]
-# Git<span style="color: #e49436">Pitch</span>
-
-#### Markdown Presentations For Everyone on Git.*
-<br>
-<br>
-<span style="color: #bbb; font-size: 80%">[ GitHub, GitLab, Bitbucket, GitBucket, Gitea, Gogs ]</span>
-
----
-@title[PITCHME.md]
-
-#### GitPitch turns <span style="color: #e49436; text-transform: none">PITCHME.md</span> into
-#### interactive,
-#### online and offline slideshows.
-<br>
-<span style="color:gray; font-size:0.6em;">[ JUST LIKE THIS ONE ]</span>
+# Variational autoencoder
 
 ---
 
-#### No more <span style="color: gray">Keynote.</span>
-#### No more <span style="color: gray">Powerpoint.</span>
-<br>
-#### Just <span style="color: #e49436">Markdown</span>.
-#### Then <span style="color: #e49436">Git-Commit</span>.
+## What is variational autoencoder?
 
----
-@title[Step 1. PITCHME.md]
+### Structure: Autoencoder
 
-### <span style="color: #e49436">STEP 1. Create 'PITCHME.md'</span>
-<br>
+* use MLP as encoder and decoder.
+* The objective of common version autoencoder is $\mathcal{L}(X, X')=||X-X'||_2^2$, where $X$ is the original image and $X'$ is reconstruction image.
 
-#### Create GitPitch slideshow content using GitHub Flavored Markdown in your favorite editor.
+### Objective function: Variational inference
 
-<br>
-<span style="color:gray; font-size:0.6em;">[ AS EASY AS README.md WITH SIMPLE --- SLIDE DELIMITER ]</span>
+* $\max \ln p(\mathbf{X})=\int q(\mathbf{Z})\ln(\frac{p(\mathbf{X,Z})}{q(\mathbf{Z})})d\mathbf{Z}-\int q(\mathbf{Z})\ln(\frac{p(\mathbf{Z}|\mathbf{X})}{q(\mathbf{Z})})d\mathbf{Z}$
 
----
-@title[Step 2. Git-Commit]
+  $=\mathcal{L}(q)+KL(q||p)$
 
-### <span style="color: #e49436">STEP 2. GIT-COMMIT</span>
-<br>
+* The objective of variational autoencoder is to comfirm that the posterior probability density function in the encoder approximates the posterior probability density function in the decoder. 
 
-```shell
-$ git add PITCHME.md
-$ git commit -m "New slideshow content."
-$ git push
+* The final objective function of variational autoencoder is
 
-Done!
+  $\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z}|\mathbf{x}^{(i)})||p_\theta(\mathbf{z}))+E_{q_\phi(z|x^{(i)})}[\log p_\theta(\mathbf{x}^{(i)}|\mathbf{z})]$. 
 
-```
+  ---
 
-@[1](Add your PITCHME.md slideshow content file.)
-@[2](Commit PITCHME.md to your local repo.)
-@[3](Push PITCHME.md to your public repo and you're done!)
-@[5](Supports GitHub, GitLab, Bitbucket, GitBucket, Gitea, and Gogs.)
+## How to optimize the model?
 
----
-@title[Step 3. Done!]
+### The SGVB estimator and AEVB algorithm
 
-### <span style="color: #e49436">STEP 3. GET THE WORD OUT!</span>
+* Objective: 
 
-<br>
+  estimate the lower bound and its derivatives w.r.t. the parameters
 
-<span style="font-size: 1.3em;"><span style="color:white">htt</span><span style="color:white">ps://git</span><span style="color: #e49436">pitch</span><span style="color: white">.com/<span style="color: #e49436">user</span>/<span style="color: #e49436">repo</span>/<span style="color: #e49436">branch</span></span>
+* Method: 
 
-<br>
+  ${\mathcal{L}}(\theta, \phi;x^{i})\simeq\tilde{\mathcal{L}}(\theta, \phi;x^{i}) = -KL(q_\phi(z|x)||p_{\theta}(z)) + \frac{1}{L}\sum_{l=1}^L\ln p_\theta(x^{(i)}|z^{(i,l)}) $
 
-#### Instantly use your GitPitch slideshow URL to promote, pitch or present absolutely anything.
+  Why? 
 
----
-@title[Slide Rich]
+  1. KL-divergence can often be integrated analytically. 
 
-### <span style="color: #e49436">Slide Rich</span>
+     When both prior $p_\theta(\mathbf{z})=\mathcal{N}(0, \mathbf{I})$ and posterior approximation $q_\phi(\mathbf{z}|\mathbf{x}^{(i)})$ are Gaussion, 
 
-#### Code Presenting for Blocks, Files, and GISTs
-#### Image, Video, Chart, and Math Slides
-#### Multiple Themes With Easy Customization
-<br>
-#### <span style="color: #e49436">Plus collaboration is built-in...</span>
-#### Your Slideshow Is Part Of Your Project
-#### Under Git Version Control Within Your Git Repo
+     $-KL(q_\phi(z|x)||p_{\theta}(z)) =\frac{1}{2}\sum_{j=1}^J(1+\log(\sigma_j^2-\mu_j^2-\sigma_j^2))$
 
----
+  2. This estimator has less variance. 
 
-@title[Feature Rich]
+     ---
 
-### <span style="color: #e49436">Feature Rich</span>
+### Reparameterization trick
 
-#### Present Online or Offline
-#### With Speaker Notes Support
-#### Print Presentation as PDF
-#### Auto-Generated Table-of-Contents
-#### Share Presentation on Twitter or LinkedIn
+* Objective: 
 
----
+  generate the samples from $q_\theta(\mathbf{z}|\mathbf{x})$, rewrite an exception w.r.t. $q_\phi(\mathbf{z}|\mathbf{x})$ such that the Monte Carlo estimator of the expectation is differentiable w.r.t. $\phi$.
 
-### Go for it.
-### Just add <span style="color: #e49436; text-transform: none">PITCHME.md</span> ;)
-<br>
-<a style="font-size:0.6em;" href="https://github.com/gitpitch/gitpitch/wiki">[ Click To Learn More On Wiki ]</a>
+* Method:
+
+  $\epsilon^{(l)}\sim p(\epsilon)$ , $\mathbf{z}=g_\phi(\epsilon, \mathbf{x})$
+
+  example: Let $z\sim p(z|x)=\mathcal{N}(\mu,\sigma^2)$, then a reparameterization is $z=\mu+\sigma\epsilon$, where $\epsilon$ is an auxiliary noise variable $\epsilon\sim\mathcal{N}(0,1) $. 
+
+  ----
+
+## Algorithm
+
+Input: 
