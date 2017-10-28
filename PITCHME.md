@@ -20,13 +20,15 @@
 
 ### Objective function: Variational inference
 
-- $\max \ln p(\mathbf{X})=\int q(\mathbf{Z})\ln(\frac{p(\mathbf{X,Z})}{q(\mathbf{Z})})d\mathbf{Z}-\int q(\mathbf{Z})\ln(\frac{p(\mathbf{Z}|\mathbf{X})}{q(\mathbf{Z})})d\mathbf{Z}$
+- $\max \ln p(\mathbf{X})$
 
-  $=\mathcal{L}(q)+KL(q||p)$
+  $=\max\int q(\mathbf{Z})\ln(\frac{p(\mathbf{X,Z})}{q(\mathbf{Z})})d\mathbf{Z}-\int q(\mathbf{Z})\ln(\frac{p(\mathbf{Z}|\mathbf{X})}{q(\mathbf{Z})})d\mathbf{Z}$
+
+  $=\max\mathcal{L}(q)+KL(q||p)$
 
 - The objective of variational autoencoder is to comfirm that the posterior probability density function in the encoder approximates the posterior probability density function in the decoder. 
 
-- The final objective function of variational autoencoder is $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})||p_{\theta}(\mathbf{z}))+E_{q_{\phi}(z|x^{(i)})}[\log p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z})]$$. 
+- The final objective function of variational autoencoder is $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_{\phi}(\mathbf{z}|\mathbf{x}^{(i)})||p_{\theta}(\mathbf{z}))+E_{q_{\phi}(z|x^{(i)})}[\log p_{\theta}(\mathbf{x}^{(i)}|\mathbf{z})]​$$. 
 
 
 ---
@@ -72,7 +74,7 @@ $$\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z
 
 - Objective: 
 
-  generate the samples from $q_{\theta}(\mathbf{z}|\mathbf{x})​$, rewrite an exception w.r.t. $q_{\phi}(\mathbf{z}|\mathbf{x})​$ such that the Monte Carlo estimator of the expectation is differentiable w.r.t. $\phi​$.
+  generate the samples from $q_{\theta}(\mathbf{z}|\mathbf{x})$, rewrite an exception w.r.t. $q_{\phi}(\mathbf{z}|\mathbf{x})$ such that the Monte Carlo estimator of the expectation is differentiable w.r.t. $\phi$.
 
 - Method:
 
