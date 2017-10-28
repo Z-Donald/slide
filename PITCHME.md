@@ -14,15 +14,15 @@
 ### Structure: Autoencoder
 
 - use MLP as encoder and decoder.
-- The objective of common version autoencoder is $$\mathcal{L}(X, X')=||X-X'||_2^2$$, where $$X$$ is the original image and $$X'$$ is reconstruction image.
+- The objective of common version autoencoder is $\mathcal{L}(X, X')=||X-X'||_2^2$, where $X$ is the original image and $X'$ is reconstruction image.
 
 ---
 
 ###Objective function: Variational inference
 
-- $$\max \ln p(\mathbf{X})=\int q(\mathbf{Z})\ln(\frac{p(\mathbf{X,Z})}{q(\mathbf{Z})})d\mathbf{Z}-\int q(\mathbf{Z})\ln(\frac{p(\mathbf{Z}|\mathbf{X})}{q(\mathbf{Z})})d\mathbf{Z}$$
+- $\max \ln p(\mathbf{X})=\int q(\mathbf{Z})\ln(\frac{p(\mathbf{X,Z})}{q(\mathbf{Z})})d\mathbf{Z}-\int q(\mathbf{Z})\ln(\frac{p(\mathbf{Z}|\mathbf{X})}{q(\mathbf{Z})})d\mathbf{Z}$
 
-  $$=\mathcal{L}(q)+KL(q||p)$$
+  $=\mathcal{L}(q)+KL(q||p)$
 
 - The objective of variational autoencoder is to comfirm that the posterior probability density function in the encoder approximates the posterior probability density function in the decoder. 
 
