@@ -30,9 +30,20 @@
 
   $\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z}|\mathbf{x}^{(i)})||p_\theta(\mathbf{z}))+E_{q_\phi(z|x^{(i)})}[\log p_\theta(\mathbf{x}^{(i)}|\mathbf{z})]$. 
 
-  ------
+---
 
 ## How to optimize the model?
+
+Objective:
+
+ $\max\limits_{\phi,\theta}\mathcal{L}(\theta,\phi,x^{(i)})=-KL(q_\phi(\mathbf{z}|\mathbf{x}^{(i)})||p_\theta(\mathbf{z}))+E_{q_\phi(z|x^{(i)})}[\log p_\theta(\mathbf{x}^{(i)}|\mathbf{z})]$. 
+
+* The SGVB estimator and AEVB algorithm
+
+
+* Reparameterization trick
+
+---
 
 ### The SGVB estimator and AEVB algorithm
 
@@ -44,6 +55,8 @@
 
   ${\mathcal{L}}(\theta, \phi;x^{i})\simeq\tilde{\mathcal{L}}(\theta, \phi;x^{i}) = -KL(q_\phi(z|x)||p_{\theta}(z)) + \frac{1}{L}\sum_{l=1}^L\ln p_\theta(x^{(i)}|z^{(i,l)}) $
 
+  ​
+
   Why? 
 
   1. KL-divergence can often be integrated analytically. 
@@ -54,7 +67,7 @@
 
   2. This estimator has less variance. 
 
-     ------
+---
 
 ### Reparameterization trick
 
@@ -68,7 +81,7 @@
 
   example: Let $z\sim p(z|x)=\mathcal{N}(\mu,\sigma^2)$, then a reparameterization is $z=\mu+\sigma\epsilon$, where $\epsilon$ is an auxiliary noise variable $\epsilon\sim\mathcal{N}(0,1) $. 
 
-  ------
+---
 
 ## Algorithm
 
